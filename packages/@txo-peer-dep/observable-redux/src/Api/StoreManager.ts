@@ -1,16 +1,14 @@
 /**
- * @Author: Rostislav Simonik <rostislav.simonik>
+ * @Author: Rostislav Simonik <rostislav.simonik@technologystudio.sk>
  * @Date:   2017-06-13T14:27:34+02:00
- * @Email:  rostislav.simonik@technologystudio.sk
  * @Copyright: Technology Studio
- * @flow
- */
+**/
 
-type Store = Object
+import type { Store, Action, Unsubscribe } from 'redux'
 
 class StoreManager {
-  _store: ?Store
-  _delayedSubscription: (*)[]
+  _store: Store | null
+  _delayedSubscription: (() => void)[]
 
   constructor () {
     this._store = null
@@ -19,10 +17,10 @@ class StoreManager {
 
   _isStore = (): boolean => this._store != null
 
-  _setStore (store: Store) {
+  _setStore (store: Store): void {
     this._store = store
     if (this._delayedSubscription.length) {
-      this._delayedSubscription.map((handleChange: () => void) => {
+      this._delayedSubscription.forEach((handleChange: () => void) => {
         this._subscribe(handleChange)
       })
       this._delayedSubscription = []
@@ -43,25 +41,25 @@ class StoreManager {
     return unsubscribe
   } */
 
-  _subscribe (handleChange: () => void) {
-    let unsubscribe = this._getStore().subscribe(handleChange)
+  _subscribe (handleChange: () => void): Unsubscribe {
+    const unsubscribe = this._getStore().subscribe(handleChange)
     handleChange()
     return unsubscribe
   }
 
-  dispatch = (action: Object) => {
-    this._getStore().dispatch(action)
+  dispatch = <ACTION extends Action>(action: ACTION): ACTION => {
+    return this._getStore().dispatch(action)
   }
 
-  observeStore<REDUX_STATE> (onChange: (state: REDUX_STATE) => void) {
-    this.observeStoreWithSelect((state) => state, onChange)
+  observeStore<REDUX_STATE> (onChange: (state: REDUX_STATE) => void): void {
+    this.observeStoreWithSelect((state: REDUX_STATE) => state, onChange)
   }
 
-  observeStoreWithSelect<REDUX_STATE, STATE> (select: (state: REDUX_STATE) => STATE, onChange: (state: STATE) => void) {
+  observeStoreWithSelect<REDUX_STATE, STATE> (select: (state: REDUX_STATE) => STATE, onChange: (state: STATE) => void): void {
     let currentState: STATE
 
-    function _handleChange () {
-      let nextState: STATE = select(storeManager._getStore().getState())
+    function _handleChange (): void {
+      const nextState: STATE = select(storeManager._getStore().getState())
       if (nextState !== currentState) {
         currentState = nextState
         onChange(currentState)
