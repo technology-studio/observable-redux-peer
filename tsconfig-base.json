@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
-    "jsx": "react",
+    "lib": ["esnext"],
     "strict": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
