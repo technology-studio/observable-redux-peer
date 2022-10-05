@@ -4,7 +4,9 @@
  * @Copyright: Technology Studio
 **/
 
-import type { Store, Action, Unsubscribe } from 'redux'
+import type {
+  Store, Action, Unsubscribe,
+} from 'redux'
 
 class StoreManager {
   _store: Store | null
@@ -47,9 +49,7 @@ class StoreManager {
     return unsubscribe
   }
 
-  dispatch = <ACTION extends Action>(action: ACTION): ACTION => {
-    return this._getStore().dispatch(action)
-  }
+  dispatch = <ACTION extends Action>(action: ACTION): ACTION => this._getStore().dispatch(action)
 
   observeStore<REDUX_STATE> (onChange: (state: REDUX_STATE) => void): void {
     this.observeStoreWithSelect((state: REDUX_STATE) => state, onChange)
