@@ -21,7 +21,7 @@ class StoreManager {
 
   _setStore (store: Store): void {
     this._store = store
-    if (this._delayedSubscription.length) {
+    if (this._delayedSubscription.length > 0) {
       this._delayedSubscription.forEach((handleChange: () => void) => {
         this._subscribe(handleChange)
       })
@@ -30,7 +30,7 @@ class StoreManager {
   }
 
   _getStore (): Store {
-    if (this._store) {
+    if (this._store != null) {
       return this._store
     }
     throw Error('store is not set, initialize Store Manager in redux configure store')
