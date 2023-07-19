@@ -59,7 +59,7 @@ class StoreManager {
     let currentState: STATE
 
     function _handleChange (): void {
-      const nextState: STATE = select(storeManager._getStore().getState())
+      const nextState: STATE = select(storeManager._getStore().getState() as REDUX_STATE)
       if (nextState !== currentState) {
         currentState = nextState
         onChange(currentState)
