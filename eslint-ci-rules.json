@@ -1,0 +1,9 @@
+[
+  "@typescript-eslint/no-magic-numbers",
+  "@stylistic/space-before-function-paren",
+  "@typescript-eslint/class-methods-use-this",
+  "@typescript-eslint/no-unnecessary-type-parameters",
+  "@typescript-eslint/init-declarations",
+  "@typescript-eslint/no-unsafe-type-assertion",
+  "@stylistic/arrow-parens"
+]
